@@ -43,7 +43,10 @@ try{
 
      const token = jwt.sign({vendorId: vendor._id}, secretKey, { expiresIn: '1h' }); 
 
-    res.status(200).json({success:"Login successful", token: token });
+    const vendorId = vendor._id;
+
+
+    res.status(200).json({success:"Login successful", token: token ,vendorId});
     console.log({Status:"Logged In Successfully",Email_Id:email, token:token});
 }
 catch(error){
@@ -71,7 +74,8 @@ const vendor = await Vendor.findById(vendorId).populate('firm');
 if(!vendor){
 return res.status(404).json({error : 'Vendor not found'})
 }
-res.status(200).json({vendor})
+const vendorFermId = vendor.firm[0]._id;
+res.status(200).json({vendorId,vendorFermId})
 } catch(error){
 console.log(error);
 res.status(500).json({error:"Internal server error"});
